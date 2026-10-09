@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="icon" type="image/svg+xml" href="/favicon.svg">
-  <title>Deportiva ITSON · Componentes</title>
+  <title>Deportiva ITSON · Catálogo y Carrito</title>
   <link rel="stylesheet" href="/src/estilos.css">
 </head>
 <body>
@@ -27,11 +27,22 @@
       <p>Doce productos. Una sola tarjeta escrita una vez.</p>
     </section>
 
-    <!-- Paso 2: aquí va la rejilla de tarjetas -->
-     <seccion class = 'rejilla' id="rejilla" aria-label="Productos"></seccion>
+    <!-- Rejilla de tarjetas de producto -->
+    <section class="rejilla" id="rejilla" aria-label="Productos"></section>
 
-    <!-- Tarea: aquí pueden montar sus dos componentes nuevos. -->
-    <section class="tarea" id="tarea"></section>
+    <!-- Sección del Carrito en Tabla Genérica -->
+    <section class="tarea">
+      <h2>Productos en el carrito</h2>
+      <tabla-generica id="tabla-carrito"></tabla-generica>
+    </section>
+
+    <!-- Demostración del componente Contador de Cantidad -->
+    <section class="tarea">
+      <h2>Componente de selección de cantidad</h2>
+      <p>Selecciona una cantidad de demostración:</p>
+      <contador-cantidad id="contador-demo" valor="1" min="1" max="10"></contador-cantidad>
+      <p id="texto-contador">Cantidad seleccionada: 1</p>
+    </section>
   </main>
 
   <script type="module" src="/src/main.ts"></script>

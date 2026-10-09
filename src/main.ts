@@ -1,11 +1,28 @@
-
 import './boton-app';
 import './tarjeta-producto';
-import type { Producto } from './tipos';
+import './tabla-generica';
+import './contador-cantidad';
+
+import type { Producto, ItemCarrito, ColumnaTabla } from './tipos';
+import type { TablaGenerica } from './tabla-generica';
 
 const rejilla = document.querySelector<HTMLElement>('#rejilla')!;
+const cuenta = document.querySelector<HTMLElement>('#cuenta')!;
+const vaciar = document.querySelector<HTMLElement>('#vaciar')!;
+const tablaCarrito = document.querySelector<TablaGenerica>('#tabla-carrito')!;
 
-// NUEVO (Paso 2): la lista de productos (recurso 8 del código base).
+// Definición de las columnas de la tabla genérica
+const columnasCarrito: ColumnaTabla[] = [
+  { clave: 'nombre', titulo: 'Producto' },
+  { clave: 'precioFormateado', titulo: 'Precio unitario' },
+  { clave: 'cantidad', titulo: 'Cantidad' },
+  { clave: 'totalFormateado', titulo: 'Total' },
+];
+
+tablaCarrito.columnas = columnasCarrito;
+let carrito: ItemCarrito[] = [];
+
+// Productos
 const productos: Producto[] = [
   { id: 'P-001', nombre: 'Tenis para correr Vento', precio: 1299, categoria: 'calzado', imagen: '/img/producto-01.jpg', existencia: 8 },
   { id: 'P-002', nombre: 'Tenis de entrenamiento Cross', precio: 1549, categoria: 'calzado', imagen: '/img/producto-02.jpg', existencia: 25 },
@@ -21,33 +38,66 @@ const productos: Producto[] = [
   { id: 'P-012', nombre: 'Calcetas deportivas (3 pares)', precio: 179, categoria: 'ropa', imagen: '/img/producto-12.jpg', existencia: 25 },
 ];
 
-// Una tarjeta por producto.
+// Generar tarjetas
 for (const p of productos) {
-  // Se crea como cualquier otra etiqueta del navegador.
   const tarjeta = document.createElement('tarjeta-producto');
-  // Y se configura SOLO con atributos: las entradas del contrato.
   tarjeta.setAttribute('producto-id', p.id);
   tarjeta.setAttribute('nombre', p.nombre);
-  tarjeta.setAttribute('precio', String(p.precio)); // los atributos son texto
+  tarjeta.setAttribute('precio', String(p.precio));
   tarjeta.setAttribute('imagen', p.imagen);
   tarjeta.setAttribute('existencia', String(p.existencia));
   rejilla.append(tarjeta);
 }
 
-// NUEVO (Paso 3): el carrito.
-const cuenta = document.querySelector<HTMLElement>('#cuenta')!;
-const vaciar = document.querySelector<HTMLElement>('#vaciar')!;
-let enCarrito = 0;
+// Función para refrescar la tabla del carrito y el contador del header
+function actualizarVistaCarrito() {
+  const totalArticulos = carrito.reduce((acc, item) => acc + item.cantidad, 0);
+  cuenta.textContent = String(totalArticulos);
 
-// UN solo listener para las doce tarjetas: el evento sube hasta la rejilla.
-rejilla.addEventListener('agregar', (e) => {
-  enCarrito++;
-  cuenta.textContent = String(enCarrito);
-  console.log('Agregado:', e.detail.nombre, e.detail.precio);
+  // Mapear objetos para dar formato legible a la tabla
+  tablaCarrito.filas = carrito.map(item => ({
+    nombre: item.nombre,
+    precioFormateado: `$${item.precio}`,
+    cantidad: item.cantidad,
+    totalFormateado: `$${item.total}`,
+  }));
+}
+
+// Evento "agregar" desde las tarjetas
+rejilla.addEventListener('agregar', (e: any) => {
+  const { id, nombre, precio, cantidad } = e.detail;
+  const cantidadAgregar = cantidad ?? 1;
+
+  const itemExistente = carrito.find(item => item.id === id);
+
+  if (itemExistente) {
+    itemExistente.cantidad += cantidadAgregar;
+    itemExistente.total = itemExistente.cantidad * itemExistente.precio;
+  } else {
+    carrito.push({
+      id,
+      nombre,
+      precio,
+      cantidad: cantidadAgregar,
+      total: precio * cantidadAgregar,
+    });
+  }
+
+  actualizarVistaCarrito();
 });
 
-// El mismo <boton-app> del encabezado, con otro uso.
 vaciar.addEventListener('click', () => {
-  enCarrito = 0;
-  cuenta.textContent = '0';
+  carrito = [];
+  actualizarVistaCarrito();
+});
+
+const contadorDemo = document.querySelector('#contador-demo');
+const textoContador = document.querySelector('#texto-contador');
+
+contadorDemo?.addEventListener('cambioCantidad', (e: Event) => {
+  const eventoCantidad = e as CustomEvent<{ valor: number }>;
+
+  if (textoContador) {
+    textoContador.textContent = `Cantidad seleccionada: ${eventoCantidad.detail.valor}`;
+  }
 });

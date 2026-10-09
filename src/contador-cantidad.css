@@ -1,0 +1,45 @@
+:host {
+  display: inline-flex;
+  align-items: center;
+}
+
+.contador {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: var(--color-fondo, #f7f8fc);
+  border: 1px solid var(--color-linea, #e5e7eb);
+  border-radius: var(--radio, 8px);
+  padding: 4px;
+}
+
+button {
+  background: #fff;
+  border: 1px solid var(--color-linea, #e5e7eb);
+  border-radius: 6px;
+  width: 28px;
+  height: 28px;
+  font-weight: 700;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--color-tinta, #111827);
+  transition: background 0.15s ease;
+}
+
+button:hover:not(:disabled) {
+  background: var(--color-linea, #e5e7eb);
+}
+
+button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+span {
+  font-weight: 600;
+  min-width: 24px;
+  text-align: center;
+  font-size: 14px;
+}

@@ -33,3 +33,30 @@ this.dispatchEvent(new CustomEvent('agregar', {
   bubbles: true,   // Permite que el evento suba por el árbol HTML
   composed: true   // Permite que el evento atraviese la frontera del Shadow DOM
 }));
+
+---
+
+## Asignación 3: Respuestas a la Asignación
+
+### Parte A: Tabla Genérica (`<tabla-generica>`)
+
+#### 1. ¿Por qué esta tabla se puede llamar «genérica»?
+Se le llama **genérica** porque no está acoplada a ningún tipo de dato específico ni conoce de antemano la estructura de la información que va a desplegar. La tabla es un componente declarativo de representación que recibe un arreglo de definición de columnas (`{ clave, titulo }`) y un arreglo de objetos de datos. 
+
+Accede dinámicamente a las propiedades de cada objeto usando la sintaxis de corchetes (`fila[col.clave]`), lo que permite que el mismo componente sirva para mostrar productos, alumnos, calificaciones o cualquier otra entidad sin modificar una sola línea de su código fuente.
+
+#### 2. ¿Qué tendría que cambiar para mostrar alumnos en lugar de productos?
+El código interno del Web Component `<tabla-generica>` se mantendría exactamente **igual**. Únicamente tendría que cambiar la configuración de las columnas y de las filas enviadas desde el archivo principal (`main.ts`):
+
+```typescript
+// Configuración para mostrar alumnos en lugar de productos
+tabla.columnas = [
+  { clave: 'matricula', titulo: 'Matrícula' },
+  { clave: 'nombre', titulo: 'Nombre del Alumno' },
+  { clave: 'carrera', titulo: 'Carrera' }
+];
+
+tabla.filas = [
+  { matricula: '00000212345', nombre: 'Ivan Arce', carrera: 'Ingeniería en Software' },
+  { matricula: '00000216789', nombre: 'María López', carrera: 'Ingeniería en Software' }
+];
