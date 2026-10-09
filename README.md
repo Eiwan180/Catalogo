@@ -33,7 +33,7 @@ this.dispatchEvent(new CustomEvent('agregar', {
   bubbles: true,   // Permite que el evento suba por el árbol HTML
   composed: true   // Permite que el evento atraviese la frontera del Shadow DOM
 }));
-
+```
 ---
 
 ## Asignación 3: Respuestas a la Asignación
@@ -60,3 +60,4 @@ tabla.filas = [
   { matricula: '00000212345', nombre: 'Ivan Arce', carrera: 'Ingeniería en Software' },
   { matricula: '00000216789', nombre: 'María López', carrera: 'Ingeniería en Software' }
 ];
+```
